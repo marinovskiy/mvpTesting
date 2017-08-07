@@ -1,9 +1,11 @@
 package com.alex.mvptesting.notes;
 
+import com.alex.mvptesting.addnote.ImmediateSchedulerRule;
 import com.alex.mvptesting.model.NoteRepository;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -34,44 +36,13 @@ public class NotesPresenterTest {
 
     private NotesPresenter notesPresenter;
 
-//    @Rule
-//    public ImmediateSchedulerRule immediateSchedulerRule = new ImmediateSchedulerRule();
-
-    @BeforeClass
-    public static void setUpRxSchedulers() {
-        Scheduler immediate = new Scheduler() {
-            @Override
-            public Disposable scheduleDirect(@NonNull Runnable run, long delay, @NonNull TimeUnit unit) {
-                // this prevents StackOverflowErrors when scheduling with a delay
-                return super.scheduleDirect(run, 0, unit);
-            }
-
-            @Override
-            public Worker createWorker() {
-                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
-            }
-        };
-
-        RxJavaPlugins.setInitIoSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setInitComputationSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setInitNewThreadSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setInitSingleSchedulerHandler(scheduler -> immediate);
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(scheduler -> immediate);
-    }
+    @Rule
+    public ImmediateSchedulerRule immediateSchedulerRule = new ImmediateSchedulerRule();
 
     @Before
     public void setupNotesPresenter() {
         MockitoAnnotations.initMocks(this);
-
         notesPresenter = new NotesPresenter(notesView, noteRepository);
-
-        // Override RxAndroid schedulers
-        RxAndroidPlugins.setMainThreadSchedulerHandler(new Function<Scheduler, Scheduler>() {
-            @Override
-            public Scheduler apply(Scheduler scheduler) throws Exception {
-                return Schedulers.trampoline();
-            }
-        });
     }
 
     @Test
