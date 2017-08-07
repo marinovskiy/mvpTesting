@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">mvpTesting</string>
+    <string name="empty_note_msg">Note cannot be empty</string>
+    <string name="error_occurred_try_later_msg">An error occurred, Please try later</string>
+</resources>
