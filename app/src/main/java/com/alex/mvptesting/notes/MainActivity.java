@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.alex.mvptesting.R;
 import com.alex.mvptesting.activities.BaseActivity;
 import com.alex.mvptesting.adapters.NotesRecyclerViewAdapter;
+import com.alex.mvptesting.adapters.OnItemClickListener;
 import com.alex.mvptesting.addnote.AddNoteActivity;
 import com.alex.mvptesting.db.AppDatabase;
 import com.alex.mvptesting.db.DatabaseInfo;
@@ -78,8 +79,16 @@ public class MainActivity extends BaseActivity implements NotesContract.View {
 
     @Override
     public void showNotes(List<Note> notes) {
+        //TODO reuse adapter
         rvNotesAdapter = new NotesRecyclerViewAdapter(notes);
         rvNotes.setAdapter(rvNotesAdapter);
+
+        rvNotesAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                //TODO start detail activity through presenter
+            }
+        });
     }
 
     @Override
