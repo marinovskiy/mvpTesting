@@ -45,4 +45,11 @@ public class AddNotePresenterTest {
         verify(noteRepository).addNote(NOTE);
         verify(addNoteView).closeAddNoteActivity();
     }
+
+    @Test
+    public void addNote_emptyNoteErrorUi() {
+        addNotePresenter.saveNote("", "");
+
+        verify(addNoteView).showEmptyNoteError();
+    }
 }

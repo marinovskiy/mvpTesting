@@ -44,6 +44,13 @@ public class NotesPresenterTest {
     }
 
     @Test
+    public void clickOnFab_ShowsAddNoteUi() {
+        notesPresenter.showAddNoteActivity();
+
+        verify(notesView).showAddNoteActivity();
+    }
+
+    @Test
     public void loadNotesFromRepositoryAndLoadIntoView() {
         when(noteRepository.getAllNotes()).thenReturn(Flowable.just(NOTES));
 

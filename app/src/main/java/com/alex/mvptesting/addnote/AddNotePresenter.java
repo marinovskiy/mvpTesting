@@ -1,12 +1,8 @@
 package com.alex.mvptesting.addnote;
 
-import android.util.Log;
-
-import com.alex.mvptesting.application.NotesApplication;
 import com.alex.mvptesting.entities.Note;
 import com.alex.mvptesting.model.NoteRepository;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Action;
