@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.alex.mvptesting.entities.Note;
 
-public interface NoteDetailsContracr {
+public interface NoteDetailsContract {
 
     interface View {
 

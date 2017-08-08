@@ -1,6 +1,5 @@
 package com.alex.mvptesting.notedetails;
 
-import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -12,15 +11,15 @@ import android.widget.Toast;
 
 import com.alex.mvptesting.R;
 import com.alex.mvptesting.activities.BaseActivity;
-import com.alex.mvptesting.db.AppDatabase;
-import com.alex.mvptesting.db.DatabaseInfo;
+import com.alex.mvptesting.application.NotesApplication;
 import com.alex.mvptesting.entities.Note;
 import com.alex.mvptesting.model.NotesRepositoryImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
 
-public class NoteDetailsActivity extends BaseActivity implements NoteDetailsContracr.View {
+public class NoteDetailsActivity extends BaseActivity implements NoteDetailsContract.View {
 
     public static final String INTENT_KEY_NOTE_ID = "intent_key_note_id";
 
@@ -35,7 +34,7 @@ public class NoteDetailsActivity extends BaseActivity implements NoteDetailsCont
     @BindView(R.id.pb_note_details)
     ProgressBar pbNoteDetails;
 
-    private NoteDetailsContracr.UserActionsListener actionListener;
+    private NoteDetailsContract.UserActionsListener actionListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +50,10 @@ public class NoteDetailsActivity extends BaseActivity implements NoteDetailsCont
             getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
 
-        actionListener = new NoteDetailsPresenter(this, new NotesRepositoryImpl(
-                Room.databaseBuilder(getApplicationContext(), AppDatabase.class, DatabaseInfo.DB_NAME).build()
-        ));
+        actionListener = new NoteDetailsPresenter(
+                this,
+                new NotesRepositoryImpl(NotesApplication.appDatabase)
+        );
 
         Integer noteId = getIntent().getIntExtra(INTENT_KEY_NOTE_ID, -1);
 

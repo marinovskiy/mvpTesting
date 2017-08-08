@@ -19,5 +19,7 @@ public class NotesApplication extends Application {
                 AppDatabase.class,
                 DatabaseInfo.DB_NAME
         ).build();
+
+//        appDatabase.c
     }
 }

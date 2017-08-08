@@ -13,6 +13,7 @@ import com.alex.mvptesting.activities.BaseActivity;
 import com.alex.mvptesting.adapters.NotesRecyclerViewAdapter;
 import com.alex.mvptesting.adapters.OnItemClickListener;
 import com.alex.mvptesting.addnote.AddNoteActivity;
+import com.alex.mvptesting.application.NotesApplication;
 import com.alex.mvptesting.db.AppDatabase;
 import com.alex.mvptesting.db.DatabaseInfo;
 import com.alex.mvptesting.entities.Note;
@@ -43,9 +44,10 @@ public class MainActivity extends BaseActivity implements NotesContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        actionListener = new NotesPresenter(this, new NotesRepositoryImpl(
-                Room.databaseBuilder(getApplicationContext(), AppDatabase.class, DatabaseInfo.DB_NAME).build()
-        ));
+        actionListener = new NotesPresenter(
+                this,
+                new NotesRepositoryImpl(NotesApplication.appDatabase)
+        );
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {

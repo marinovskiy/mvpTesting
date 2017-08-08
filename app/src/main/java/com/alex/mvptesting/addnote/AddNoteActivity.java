@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.alex.mvptesting.R;
 import com.alex.mvptesting.activities.BaseActivity;
+import com.alex.mvptesting.application.NotesApplication;
 import com.alex.mvptesting.db.AppDatabase;
 import com.alex.mvptesting.db.DatabaseInfo;
 import com.alex.mvptesting.model.NotesRepositoryImpl;
@@ -40,9 +41,10 @@ public class AddNoteActivity extends BaseActivity implements AddNoteContract.Vie
             getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
 
-        actionListener = new AddNotePresenter(this, new NotesRepositoryImpl(
-                Room.databaseBuilder(getApplicationContext(), AppDatabase.class, DatabaseInfo.DB_NAME).build()
-        ));
+        actionListener = new AddNotePresenter(
+                this,
+                new NotesRepositoryImpl(NotesApplication.appDatabase)
+        );
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 
 import io.reactivex.Single;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +28,7 @@ public class NoteDetailsPresenterTest {
     private NotesRepository notesRepository;
 
     @Mock
-    private NoteDetailsContracr.View noteDetailsView;
+    private NoteDetailsContract.View noteDetailsView;
 
     private NoteDetailsPresenter noteDetailsPresenter;
 
@@ -59,6 +60,18 @@ public class NoteDetailsPresenterTest {
         noteDetailsPresenter.getNote(NOTE_ID_INVALID_TEST);
 
         verify(noteDetailsView).showMissingNote();
+    }
+
+    @Test
+    public void getNoteFromRepository_showError() {
+        when(notesRepository.getNoteById(NOTE_ID_TEST)).thenReturn(Single.error(new Throwable()));
+
+        noteDetailsPresenter.getNote(NOTE_ID_TEST);
+
+        InOrder inOrder = Mockito.inOrder(noteDetailsView);
+        inOrder.verify(noteDetailsView).setProgressIndicator(true);
+        inOrder.verify(noteDetailsView).setProgressIndicator(false);
+        inOrder.verify(noteDetailsView).showError(any());
     }
 
 //    @Test

@@ -11,14 +11,14 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class NoteDetailsPresenter implements NoteDetailsContracr.UserActionsListener {
+public class NoteDetailsPresenter implements NoteDetailsContract.UserActionsListener {
 
     @NonNull
-    private final NoteDetailsContracr.View noteDetailsView;
+    private final NoteDetailsContract.View noteDetailsView;
     @NonNull
     private final NotesRepository notesRepository;
 
-    public NoteDetailsPresenter(NoteDetailsContracr.View noteDetailsView,
+    public NoteDetailsPresenter(NoteDetailsContract.View noteDetailsView,
                                 NotesRepository notesRepository) {
         this.noteDetailsView = noteDetailsView;
         this.notesRepository = notesRepository;
