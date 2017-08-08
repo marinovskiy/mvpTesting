@@ -22,7 +22,7 @@
             android:name=".addnote.AddNoteActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".notedetails.NoteDetailActivity"
+            android:name=".notedetails.NoteDetailsActivity"
             android:screenOrientation="portrait" />
     </application>
 

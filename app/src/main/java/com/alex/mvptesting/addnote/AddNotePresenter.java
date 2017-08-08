@@ -1,7 +1,7 @@
 package com.alex.mvptesting.addnote;
 
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NoteRepository;
+import com.alex.mvptesting.model.NotesRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -16,11 +16,11 @@ public class AddNotePresenter implements AddNoteContract.UserActionsListener {
     @NonNull
     private final AddNoteContract.View addNoteView;
     @NonNull
-    private final NoteRepository noteRepository;
+    private final NotesRepository notesRepository;
 
-    public AddNotePresenter(AddNoteContract.View addNoteView, NoteRepository noteRepository) {
+    public AddNotePresenter(AddNoteContract.View addNoteView, NotesRepository notesRepository) {
         this.addNoteView = addNoteView;
-        this.noteRepository = noteRepository;
+        this.notesRepository = notesRepository;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class AddNotePresenter implements AddNoteContract.UserActionsListener {
         if (newNote.isEmpty()) {
             addNoteView.showEmptyNoteError();
         } else {
-            noteRepository.addNote(newNote)
+            notesRepository.addNote(newNote)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Action() {

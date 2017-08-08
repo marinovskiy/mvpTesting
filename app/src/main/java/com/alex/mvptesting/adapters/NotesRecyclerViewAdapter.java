@@ -26,6 +26,11 @@ public class NotesRecyclerViewAdapter extends
         this.notes = notes;
     }
 
+    public void updateNotes(List<Note> notes) {
+        this.notes = notes;
+        notifyDataSetChanged();
+    }
+
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new NoteViewHolder(LayoutInflater.from(parent.getContext())
@@ -52,6 +57,7 @@ public class NotesRecyclerViewAdapter extends
         NoteViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
 
         @Override

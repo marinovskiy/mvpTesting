@@ -4,7 +4,6 @@ import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
@@ -17,7 +16,8 @@ import com.alex.mvptesting.addnote.AddNoteActivity;
 import com.alex.mvptesting.db.AppDatabase;
 import com.alex.mvptesting.db.DatabaseInfo;
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NoteRepositoryImpl;
+import com.alex.mvptesting.model.NotesRepositoryImpl;
+import com.alex.mvptesting.notedetails.NoteDetailsActivity;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity implements NotesContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        actionListener = new NotesPresenter(this, new NoteRepositoryImpl(
+        actionListener = new NotesPresenter(this, new NotesRepositoryImpl(
                 Room.databaseBuilder(getApplicationContext(), AppDatabase.class, DatabaseInfo.DB_NAME).build()
         ));
 
@@ -79,16 +79,19 @@ public class MainActivity extends BaseActivity implements NotesContract.View {
 
     @Override
     public void showNotes(List<Note> notes) {
-        //TODO reuse adapter
-        rvNotesAdapter = new NotesRecyclerViewAdapter(notes);
-        rvNotes.setAdapter(rvNotesAdapter);
+        if (rvNotesAdapter == null) {
+            rvNotesAdapter = new NotesRecyclerViewAdapter(notes);
+            rvNotes.setAdapter(rvNotesAdapter);
 
-        rvNotesAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                //TODO start detail activity through presenter
-            }
-        });
+            rvNotesAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    actionListener.showNoteDetailsActivity(notes.get(position).getId());
+                }
+            });
+        } else {
+            rvNotesAdapter.updateNotes(notes);
+        }
     }
 
     @Override
@@ -102,5 +105,12 @@ public class MainActivity extends BaseActivity implements NotesContract.View {
                 new Intent(this, AddNoteActivity.class),
                 REQUEST_CODE_ADD_NOTE
         );
+    }
+
+    @Override
+    public void showNoteDetailsActivity(Integer noteId) {
+        Intent intentNoteDetails = new Intent(this, NoteDetailsActivity.class);
+        intentNoteDetails.putExtra(NoteDetailsActivity.INTENT_KEY_NOTE_ID, noteId);
+        startActivity(intentNoteDetails);
     }
 }

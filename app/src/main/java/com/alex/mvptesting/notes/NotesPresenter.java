@@ -1,7 +1,7 @@
 package com.alex.mvptesting.notes;
 
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NoteRepository;
+import com.alex.mvptesting.model.NotesRepository;
 
 import java.util.List;
 
@@ -15,16 +15,16 @@ public class NotesPresenter implements NotesContract.UserActionsListener {
     @NonNull
     private final NotesContract.View notesView;
     @NonNull
-    private final NoteRepository noteRepository;
+    private final NotesRepository notesRepository;
 
-    public NotesPresenter(NotesContract.View notesView, NoteRepository noteRepository) {
+    public NotesPresenter(NotesContract.View notesView, NotesRepository notesRepository) {
         this.notesView = notesView;
-        this.noteRepository = noteRepository;
+        this.notesRepository = notesRepository;
     }
 
     @Override
     public void loadNotes() {
-        noteRepository.getAllNotes()
+        notesRepository.getAllNotes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Note>>() {
@@ -43,5 +43,10 @@ public class NotesPresenter implements NotesContract.UserActionsListener {
     @Override
     public void showAddNoteActivity() {
         notesView.showAddNoteActivity();
+    }
+
+    @Override
+    public void showNoteDetailsActivity(Integer noteId) {
+        notesView.showNoteDetailsActivity(noteId);
     }
 }

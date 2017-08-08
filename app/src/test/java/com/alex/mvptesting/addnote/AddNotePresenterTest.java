@@ -1,7 +1,8 @@
 package com.alex.mvptesting.addnote;
 
+import com.alex.mvptesting.ImmediateSchedulerRule;
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NoteRepository;
+import com.alex.mvptesting.model.NotesRepository;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,7 +21,7 @@ public class AddNotePresenterTest {
     private final Note NOTE = new Note("title", "text");
 
     @Mock
-    private NoteRepository noteRepository;
+    private NotesRepository notesRepository;
 
     @Mock
     private AddNoteContract.View addNoteView;
@@ -33,16 +34,16 @@ public class AddNotePresenterTest {
     @Before
     public void setupAddNotePresenter() {
         MockitoAnnotations.initMocks(this);
-        addNotePresenter = new AddNotePresenter(addNoteView, noteRepository);
+        addNotePresenter = new AddNotePresenter(addNoteView, notesRepository);
     }
 
     @Test
     public void addNote_showsSuccessMessage() {
-        when(noteRepository.addNote(NOTE)).thenReturn(Completable.complete());
+        when(notesRepository.addNote(NOTE)).thenReturn(Completable.complete());
 
         addNotePresenter.saveNote(NOTE.getTitle(), NOTE.getText());
 
-        verify(noteRepository).addNote(NOTE);
+        verify(notesRepository).addNote(NOTE);
         verify(addNoteView).closeAddNoteActivity();
     }
 

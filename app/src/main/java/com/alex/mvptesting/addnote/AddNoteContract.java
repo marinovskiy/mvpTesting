@@ -1,6 +1,6 @@
 package com.alex.mvptesting.addnote;
 
-public class AddNoteContract {
+public interface AddNoteContract {
 
     interface View {
 

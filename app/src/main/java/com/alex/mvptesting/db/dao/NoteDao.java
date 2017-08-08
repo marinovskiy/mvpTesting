@@ -20,7 +20,7 @@ public interface NoteDao {
     Flowable<List<Note>> getAll();
 
     @Query("SELECT * FROM notes WHERE id = (:noteId)")
-    Note getById(int noteId);
+    Single<Note> getById(int noteId);
 
     @Insert
     void insert(Note note);

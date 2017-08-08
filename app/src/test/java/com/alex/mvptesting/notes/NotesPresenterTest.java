@@ -1,8 +1,8 @@
 package com.alex.mvptesting.notes;
 
-import com.alex.mvptesting.addnote.ImmediateSchedulerRule;
+import com.alex.mvptesting.ImmediateSchedulerRule;
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NoteRepository;
+import com.alex.mvptesting.model.NotesRepository;
 import com.google.common.collect.Lists;
 
 import org.junit.Before;
@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -30,7 +29,7 @@ public class NotesPresenterTest {
     private NotesContract.View notesView;
 
     @Mock
-    private NoteRepository noteRepository;
+    private NotesRepository notesRepository;
 
     private NotesPresenter notesPresenter;
 
@@ -40,7 +39,7 @@ public class NotesPresenterTest {
     @Before
     public void setupNotesPresenter() {
         MockitoAnnotations.initMocks(this);
-        notesPresenter = new NotesPresenter(notesView, noteRepository);
+        notesPresenter = new NotesPresenter(notesView, notesRepository);
     }
 
     @Test
@@ -52,11 +51,11 @@ public class NotesPresenterTest {
 
     @Test
     public void loadNotesFromRepositoryAndLoadIntoView() {
-        when(noteRepository.getAllNotes()).thenReturn(Flowable.just(NOTES));
+        when(notesRepository.getAllNotes()).thenReturn(Flowable.just(NOTES));
 
         notesPresenter.loadNotes();
 
-        verify(noteRepository).getAllNotes();
+        verify(notesRepository).getAllNotes();
         verify(notesView).showNotes(NOTES);
     }
 }

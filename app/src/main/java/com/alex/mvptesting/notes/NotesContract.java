@@ -4,7 +4,7 @@ import com.alex.mvptesting.entities.Note;
 
 import java.util.List;
 
-public class NotesContract {
+public interface NotesContract {
 
     interface View {
 
@@ -14,6 +14,8 @@ public class NotesContract {
 
         void showAddNoteActivity();
 
+        void showNoteDetailsActivity(Integer noteId);
+
     }
 
     interface UserActionsListener {
@@ -21,6 +23,8 @@ public class NotesContract {
         void loadNotes();
 
         void showAddNoteActivity();
+
+        void showNoteDetailsActivity(Integer noteId);
 
     }
 }

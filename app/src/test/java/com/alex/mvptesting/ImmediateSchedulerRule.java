@@ -1,4 +1,4 @@
-package com.alex.mvptesting.addnote;
+package com.alex.mvptesting;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
