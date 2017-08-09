@@ -1,6 +1,5 @@
 package com.alex.mvptesting.addnote;
 
-import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,8 +10,6 @@ import android.widget.Toast;
 import com.alex.mvptesting.R;
 import com.alex.mvptesting.activities.BaseActivity;
 import com.alex.mvptesting.application.NotesApplication;
-import com.alex.mvptesting.db.AppDatabase;
-import com.alex.mvptesting.db.DatabaseInfo;
 import com.alex.mvptesting.model.NotesRepositoryImpl;
 
 import butterknife.BindView;
@@ -26,7 +23,7 @@ public class AddNoteActivity extends BaseActivity implements AddNoteContract.Vie
     @BindView(R.id.et_note_text)
     EditText etNoteText;
 
-    private AddNoteContract.UserActionsListener actionListener;
+    private AddNoteContract.UserActionsListener addNotePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +38,16 @@ public class AddNoteActivity extends BaseActivity implements AddNoteContract.Vie
             getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
 
-        actionListener = new AddNotePresenter(
-                this,
+        addNotePresenter = new AddNotePresenter(
                 new NotesRepositoryImpl(NotesApplication.appDatabase)
         );
+        addNotePresenter.attach(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        addNotePresenter.detach();
     }
 
     @Override
@@ -61,7 +64,7 @@ public class AddNoteActivity extends BaseActivity implements AddNoteContract.Vie
                 finish();
                 return true;
             case R.id.action_add_note:
-                actionListener.saveNote(getNoteTitle(), getNoteText());
+                addNotePresenter.saveNote(getNoteTitle(), getNoteText());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

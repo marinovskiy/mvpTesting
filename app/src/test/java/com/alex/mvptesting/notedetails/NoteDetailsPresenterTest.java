@@ -38,7 +38,8 @@ public class NoteDetailsPresenterTest {
     @Before
     public void setupNoteDetailsPresenter() {
         MockitoAnnotations.initMocks(this);
-        noteDetailsPresenter = new NoteDetailsPresenter(noteDetailsView, notesRepository);
+        noteDetailsPresenter = new NoteDetailsPresenter(notesRepository);
+        noteDetailsPresenter.attach(noteDetailsView);
     }
 
     @Test
@@ -73,16 +74,4 @@ public class NoteDetailsPresenterTest {
         inOrder.verify(noteDetailsView).setProgressIndicator(false);
         inOrder.verify(noteDetailsView).showError(any());
     }
-
-//    @Test
-//    public void getNullNoteFromRepositoryAndLoadIntoView() {
-//        when(notesRepository.getNoteById(NOTE_ID_TEST)).thenReturn(Single.just(null));
-//
-//        noteDetailsPresenter.getNote(NOTE_ID_TEST);
-//
-//        InOrder inOrder = Mockito.inOrder(noteDetailsView);
-//        inOrder.verify(noteDetailsView).setProgressIndicator(true);
-//        inOrder.verify(noteDetailsView).setProgressIndicator(false);
-//        inOrder.verify(noteDetailsView).showMissingNote();
-//    }
 }

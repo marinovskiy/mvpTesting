@@ -1,6 +1,5 @@
 package com.alex.mvptesting.notes;
 
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,8 +13,6 @@ import com.alex.mvptesting.adapters.NotesRecyclerViewAdapter;
 import com.alex.mvptesting.adapters.OnItemClickListener;
 import com.alex.mvptesting.addnote.AddNoteActivity;
 import com.alex.mvptesting.application.NotesApplication;
-import com.alex.mvptesting.db.AppDatabase;
-import com.alex.mvptesting.db.DatabaseInfo;
 import com.alex.mvptesting.entities.Note;
 import com.alex.mvptesting.model.NotesRepositoryImpl;
 import com.alex.mvptesting.notedetails.NoteDetailsActivity;
@@ -34,7 +31,7 @@ public class MainActivity extends BaseActivity implements NotesContract.View {
     @BindView(R.id.rv_notes)
     RecyclerView rvNotes;
 
-    private NotesContract.UserActionsListener actionListener;
+    private NotesContract.UserActionsListener notesPresenter;
 
     private GridLayoutManager gridLayoutManager;
     private NotesRecyclerViewAdapter rvNotesAdapter;
@@ -44,10 +41,8 @@ public class MainActivity extends BaseActivity implements NotesContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        actionListener = new NotesPresenter(
-                this,
-                new NotesRepositoryImpl(NotesApplication.appDatabase)
-        );
+        notesPresenter = new NotesPresenter(new NotesRepositoryImpl(NotesApplication.appDatabase));
+        notesPresenter.attach(this);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -59,7 +54,7 @@ public class MainActivity extends BaseActivity implements NotesContract.View {
         gridLayoutManager = new GridLayoutManager(this, 2);
         rvNotes.setLayoutManager(gridLayoutManager);
 
-        actionListener.loadNotes();
+        notesPresenter.loadNotes();
     }
 
     @Override
@@ -68,15 +63,21 @@ public class MainActivity extends BaseActivity implements NotesContract.View {
             switch (requestCode) {
                 case REQUEST_CODE_ADD_NOTE:
                     // reload notes
-                    actionListener.loadNotes();
+                    notesPresenter.loadNotes();
                     break;
             }
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        notesPresenter.detach();
+    }
+
     @OnClick(R.id.fab_add_note)
     public void onViewClicked() {
-        actionListener.showAddNoteActivity();
+        notesPresenter.showAddNoteActivity();
     }
 
     @Override
@@ -88,7 +89,9 @@ public class MainActivity extends BaseActivity implements NotesContract.View {
             rvNotesAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    actionListener.showNoteDetailsActivity(notes.get(position).getId());
+                    notesPresenter.showNoteDetailsActivity(
+                            rvNotesAdapter.getNotes().get(position).getId()
+                    );
                 }
             });
         } else {

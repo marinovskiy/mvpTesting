@@ -10,6 +10,7 @@ import com.alex.mvptesting.R;
 import com.alex.mvptesting.entities.Note;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -73,6 +74,10 @@ public class NotesRecyclerViewAdapter extends
                 tvNoteShortText.setText(note.getText());
             }
         }
+    }
+
+    public List<Note> getNotes() {
+        return notes != null ? notes : Collections.emptyList();
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

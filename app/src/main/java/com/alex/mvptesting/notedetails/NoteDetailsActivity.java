@@ -16,8 +16,6 @@ import com.alex.mvptesting.entities.Note;
 import com.alex.mvptesting.model.NotesRepositoryImpl;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.reactivex.Observable;
 
 public class NoteDetailsActivity extends BaseActivity implements NoteDetailsContract.View {
 
@@ -34,13 +32,12 @@ public class NoteDetailsActivity extends BaseActivity implements NoteDetailsCont
     @BindView(R.id.pb_note_details)
     ProgressBar pbNoteDetails;
 
-    private NoteDetailsContract.UserActionsListener actionListener;
+    private NoteDetailsContract.UserActionsListener noteDetailsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_details);
-        ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -50,14 +47,20 @@ public class NoteDetailsActivity extends BaseActivity implements NoteDetailsCont
             getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
 
-        actionListener = new NoteDetailsPresenter(
-                this,
+        noteDetailsPresenter = new NoteDetailsPresenter(
                 new NotesRepositoryImpl(NotesApplication.appDatabase)
         );
+        noteDetailsPresenter.attach(this);
 
         Integer noteId = getIntent().getIntExtra(INTENT_KEY_NOTE_ID, -1);
 
-        actionListener.getNote(noteId);
+        noteDetailsPresenter.getNote(noteId);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        noteDetailsPresenter.detach();
     }
 
     @Override

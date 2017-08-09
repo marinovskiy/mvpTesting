@@ -14,13 +14,23 @@ public class AddNotePresenter implements AddNoteContract.UserActionsListener {
     public static final String TAG = AddNotePresenter.class.getSimpleName();
 
     @NonNull
-    private final AddNoteContract.View addNoteView;
-    @NonNull
     private final NotesRepository notesRepository;
 
-    public AddNotePresenter(AddNoteContract.View addNoteView, NotesRepository notesRepository) {
-        this.addNoteView = addNoteView;
+    @NonNull
+    private AddNoteContract.View addNoteView;
+
+    public AddNotePresenter(NotesRepository notesRepository) {
         this.notesRepository = notesRepository;
+    }
+
+    @Override
+    public void attach(AddNoteContract.View view) {
+        addNoteView = view;
+    }
+
+    @Override
+    public void detach() {
+        addNoteView = null;
     }
 
     @Override

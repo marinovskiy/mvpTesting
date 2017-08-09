@@ -14,14 +14,23 @@ import io.reactivex.schedulers.Schedulers;
 public class NoteDetailsPresenter implements NoteDetailsContract.UserActionsListener {
 
     @NonNull
-    private final NoteDetailsContract.View noteDetailsView;
-    @NonNull
     private final NotesRepository notesRepository;
 
-    public NoteDetailsPresenter(NoteDetailsContract.View noteDetailsView,
-                                NotesRepository notesRepository) {
-        this.noteDetailsView = noteDetailsView;
+    @NonNull
+    private NoteDetailsContract.View noteDetailsView;
+
+    public NoteDetailsPresenter(NotesRepository notesRepository) {
         this.notesRepository = notesRepository;
+    }
+
+    @Override
+    public void attach(NoteDetailsContract.View view) {
+        noteDetailsView = view;
+    }
+
+    @Override
+    public void detach() {
+        noteDetailsView = null;
     }
 
     @Override
@@ -44,11 +53,7 @@ public class NoteDetailsPresenter implements NoteDetailsContract.UserActionsList
                     @Override
                     public void onSuccess(@NonNull Note note) {
                         noteDetailsView.setProgressIndicator(false);
-                        if (note == null) {
-                            noteDetailsView.showMissingNote();
-                        } else {
-                            noteDetailsView.showNote(note);
-                        }
+                        noteDetailsView.showNote(note);
                     }
 
                     @Override

@@ -13,13 +13,24 @@ import io.reactivex.schedulers.Schedulers;
 public class NotesPresenter implements NotesContract.UserActionsListener {
 
     @NonNull
-    private final NotesContract.View notesView;
-    @NonNull
     private final NotesRepository notesRepository;
 
-    public NotesPresenter(NotesContract.View notesView, NotesRepository notesRepository) {
-        this.notesView = notesView;
+    @NonNull
+    private NotesContract.View notesView;
+
+
+    public NotesPresenter(NotesRepository notesRepository) {
         this.notesRepository = notesRepository;
+    }
+
+    @Override
+    public void attach(NotesContract.View view) {
+        notesView = view;
+    }
+
+    @Override
+    public void detach() {
+        notesView = null;
     }
 
     @Override
@@ -30,23 +41,31 @@ public class NotesPresenter implements NotesContract.UserActionsListener {
                 .subscribe(new Consumer<List<Note>>() {
                     @Override
                     public void accept(List<Note> notes) throws Exception {
-                        notesView.showNotes(notes);
+                        if (notesView != null) {
+                            notesView.showNotes(notes);
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        notesView.showError();
+                        if (notesView != null) {
+                            notesView.showError();
+                        }
                     }
                 });
     }
 
     @Override
     public void showAddNoteActivity() {
-        notesView.showAddNoteActivity();
+        if (notesView != null) {
+            notesView.showAddNoteActivity();
+        }
     }
 
     @Override
     public void showNoteDetailsActivity(Integer noteId) {
-        notesView.showNoteDetailsActivity(noteId);
+        if (notesView != null) {
+            notesView.showNoteDetailsActivity(noteId);
+        }
     }
 }

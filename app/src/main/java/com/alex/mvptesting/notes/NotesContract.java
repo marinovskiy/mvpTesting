@@ -1,5 +1,6 @@
 package com.alex.mvptesting.notes;
 
+import com.alex.mvptesting.BasePresenter;
 import com.alex.mvptesting.entities.Note;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface NotesContract {
 
     }
 
-    interface UserActionsListener {
+    interface UserActionsListener extends BasePresenter<View> {
 
         void loadNotes();
 

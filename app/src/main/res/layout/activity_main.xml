@@ -44,13 +44,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/colorAccent"
         android:clickable="true"
         android:src="@drawable/ic_add"
+        app:backgroundTint="@color/colorAccent"
         app:borderWidth="2dp"
         app:elevation="4dp"
         app:fabSize="normal"
         app:layout_anchorGravity="bottom|right|end" />
-
 
 </android.support.design.widget.CoordinatorLayout>
