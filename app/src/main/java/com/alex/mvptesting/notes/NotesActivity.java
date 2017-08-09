@@ -14,7 +14,7 @@ import com.alex.mvptesting.adapters.OnItemClickListener;
 import com.alex.mvptesting.addnote.AddNoteActivity;
 import com.alex.mvptesting.application.NotesApplication;
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NotesRepositoryImpl;
+import com.alex.mvptesting.data.NotesRepositoryImpl;
 import com.alex.mvptesting.notedetails.NoteDetailsActivity;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements NotesContract.View {
+public class NotesActivity extends BaseActivity implements NotesContract.View {
 
     private static final int REQUEST_CODE_ADD_NOTE = 1001;
 

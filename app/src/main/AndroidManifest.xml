@@ -11,7 +11,7 @@
         android:name=".application.NotesApplication"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".notes.MainActivity"
+            android:name=".notes.NotesActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

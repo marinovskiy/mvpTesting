@@ -1,7 +1,7 @@
 package com.alex.mvptesting.addnote;
 
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NotesRepository;
+import com.alex.mvptesting.data.NotesRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -31,6 +31,11 @@ public class AddNotePresenter implements AddNoteContract.UserActionsListener {
     @Override
     public void detach() {
         addNoteView = null;
+    }
+
+    @Override
+    public AddNoteContract.View getView() {
+        return null;
     }
 
     @Override

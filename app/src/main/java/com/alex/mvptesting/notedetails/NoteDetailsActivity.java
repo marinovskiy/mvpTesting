@@ -13,7 +13,7 @@ import com.alex.mvptesting.R;
 import com.alex.mvptesting.activities.BaseActivity;
 import com.alex.mvptesting.application.NotesApplication;
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NotesRepositoryImpl;
+import com.alex.mvptesting.data.NotesRepositoryImpl;
 
 import butterknife.BindView;
 

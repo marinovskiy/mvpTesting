@@ -1,7 +1,7 @@
 package com.alex.mvptesting.notes;
 
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NotesRepository;
+import com.alex.mvptesting.data.NotesRepository;
 
 import java.util.List;
 
@@ -31,6 +31,11 @@ public class NotesPresenter implements NotesContract.UserActionsListener {
     @Override
     public void detach() {
         notesView = null;
+    }
+
+    @Override
+    public NotesContract.View getView() {
+        return notesView;
     }
 
     @Override

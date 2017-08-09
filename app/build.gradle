@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.7.5.201505241946"
+}
 
 android {
     compileSdkVersion 26
@@ -13,6 +18,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            testCoverageEnabled = true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -76,8 +84,9 @@ dependencies {
 
     // tests
     testCompile "junit:junit:$junitVersion"
-    testCompile "org.mockito:mockito-all:$mockitoVersion"
     testCompile "org.hamcrest:hamcrest-all:$hamcrestVersion"
+    testCompile "org.robolectric:robolectric:3.4.2"
+    testCompile "org.mockito:mockito-all:$mockitoVersion"
     testCompile "org.powermock:powermock-module-junit4:$powerMockito"
     testCompile "org.powermock:powermock-api-mockito:$powerMockito"
 

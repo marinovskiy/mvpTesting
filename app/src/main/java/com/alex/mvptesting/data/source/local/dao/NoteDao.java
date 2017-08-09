@@ -1,4 +1,4 @@
-package com.alex.mvptesting.db.dao;
+package com.alex.mvptesting.data.source.local.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -8,7 +8,6 @@ import android.arch.persistence.room.Query;
 import com.alex.mvptesting.entities.Note;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;

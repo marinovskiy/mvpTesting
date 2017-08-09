@@ -3,7 +3,7 @@ package com.alex.mvptesting.notedetails;
 import android.support.annotation.Nullable;
 
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NotesRepository;
+import com.alex.mvptesting.data.NotesRepository;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -31,6 +31,11 @@ public class NoteDetailsPresenter implements NoteDetailsContract.UserActionsList
     @Override
     public void detach() {
         noteDetailsView = null;
+    }
+
+    @Override
+    public NoteDetailsContract.View getView() {
+        return null;
     }
 
     @Override

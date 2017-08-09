@@ -1,4 +1,4 @@
-package com.alex.mvptesting.model;
+package com.alex.mvptesting.data;
 
 import com.alex.mvptesting.entities.Note;
 

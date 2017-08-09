@@ -2,7 +2,7 @@ package com.alex.mvptesting.addnote;
 
 import com.alex.mvptesting.ImmediateSchedulerRule;
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.model.NotesRepository;
+import com.alex.mvptesting.data.NotesRepository;
 
 import org.junit.Before;
 import org.junit.Rule;

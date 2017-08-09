@@ -6,4 +6,6 @@ public interface BasePresenter<V> {
 
     void detach();
 
+    V getView();
+
 }
