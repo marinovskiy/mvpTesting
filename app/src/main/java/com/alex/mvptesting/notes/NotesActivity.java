@@ -41,8 +41,11 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        notesPresenter = new NotesPresenter(new NotesRepositoryImpl(NotesApplication.appDatabase));
-        notesPresenter.attach(this);
+        notesPresenter = new NotesPresenter(
+                this,
+                new NotesRepositoryImpl(NotesApplication.appDatabase)
+        );
+//        notesPresenter.attach(this);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -72,7 +75,7 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        notesPresenter.detach();
+//        notesPresenter.detach();
     }
 
     @OnClick(R.id.fab_add_note)

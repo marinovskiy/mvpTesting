@@ -43,8 +43,8 @@ public class NotesPresenterTest {
     @Before
     public void setupNotesPresenter() {
         MockitoAnnotations.initMocks(this);
-        notesPresenter = new NotesPresenter(notesRepository);
-        notesPresenter.attach(notesView);
+        notesPresenter = new NotesPresenter(notesView, notesRepository);
+//        notesPresenter.attach(notesView);
     }
 
     @Test
@@ -81,17 +81,17 @@ public class NotesPresenterTest {
         verify(notesView).showError();
     }
 
-    @Test
-    public void attachTest() {
-        notesPresenter.attach(notesView);
-
-        assertNotNull(notesView);
-    }
-
-    @Test
-    public void detachTest() {
-        notesPresenter.detach();
-
-        assertNull(notesPresenter.getView());
-    }
+//    @Test
+//    public void attachTest() {
+//        notesPresenter.attach(notesView);
+//
+//        assertNotNull(notesView);
+//    }
+//
+//    @Test
+//    public void detachTest() {
+//        notesPresenter.detach();
+//
+//        assertNull(notesPresenter.getView());
+//    }
 }

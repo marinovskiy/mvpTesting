@@ -39,15 +39,14 @@ public class AddNoteActivity extends BaseActivity implements AddNoteContract.Vie
         }
 
         addNotePresenter = new AddNotePresenter(
+                this,
                 new NotesRepositoryImpl(NotesApplication.appDatabase)
         );
-        addNotePresenter.attach(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        addNotePresenter.detach();
     }
 
     @Override

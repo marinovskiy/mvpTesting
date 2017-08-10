@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import io.reactivex.Completable;
+import io.reactivex.internal.operators.completable.CompletableFromAction;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.when;
 
 public class AddNotePresenterTest {
 
+    private final Note EMPTY_NOTE = new Note(null, "");
     private final Note NOTE = new Note("title", "text");
 
     @Mock
@@ -34,12 +36,18 @@ public class AddNotePresenterTest {
     @Before
     public void setupAddNotePresenter() {
         MockitoAnnotations.initMocks(this);
-        addNotePresenter = new AddNotePresenter(notesRepository);
-        addNotePresenter.attach(addNoteView);
+        addNotePresenter = new AddNotePresenter(addNoteView, notesRepository);
     }
 
     @Test
-    public void addNote_showsSuccessMessage() {
+    public void addNote_showsEmptyNoteError() {
+        addNotePresenter.saveNote(EMPTY_NOTE.getTitle(), EMPTY_NOTE.getText());
+
+        verify(addNoteView).showEmptyNoteError();
+    }
+
+    @Test
+    public void addNote_closeAddNoteActivity() {
         when(notesRepository.addNote(NOTE)).thenReturn(Completable.complete());
 
         addNotePresenter.saveNote(NOTE.getTitle(), NOTE.getText());
@@ -49,9 +57,12 @@ public class AddNotePresenterTest {
     }
 
     @Test
-    public void addNote_emptyNoteErrorUi() {
-        addNotePresenter.saveNote("", "");
+    public void loadNotesFromRepositoryAndShowError() {
+        when(notesRepository.addNote(NOTE)).thenReturn(CompletableFromAction.error(new Throwable()));
 
-        verify(addNoteView).showEmptyNoteError();
+        addNotePresenter.saveNote(NOTE.getTitle(), NOTE.getText());
+
+        verify(notesRepository).addNote(NOTE);
+        verify(addNoteView).showError(any());
     }
 }

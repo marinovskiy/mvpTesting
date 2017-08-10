@@ -1,7 +1,7 @@
 package com.alex.mvptesting.notes;
 
-import com.alex.mvptesting.entities.Note;
 import com.alex.mvptesting.data.NotesRepository;
+import com.alex.mvptesting.entities.Note;
 
 import java.util.List;
 
@@ -13,29 +13,14 @@ import io.reactivex.schedulers.Schedulers;
 public class NotesPresenter implements NotesContract.UserActionsListener {
 
     @NonNull
+    private final NotesContract.View notesView;
+    @NonNull
     private final NotesRepository notesRepository;
 
-    @NonNull
-    private NotesContract.View notesView;
-
-
-    public NotesPresenter(NotesRepository notesRepository) {
+    public NotesPresenter(@NonNull NotesContract.View notesView,
+                          @NonNull NotesRepository notesRepository) {
+        this.notesView = notesView;
         this.notesRepository = notesRepository;
-    }
-
-    @Override
-    public void attach(NotesContract.View view) {
-        notesView = view;
-    }
-
-    @Override
-    public void detach() {
-        notesView = null;
-    }
-
-    @Override
-    public NotesContract.View getView() {
-        return notesView;
     }
 
     @Override

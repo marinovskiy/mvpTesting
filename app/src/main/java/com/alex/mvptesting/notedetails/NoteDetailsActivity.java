@@ -48,9 +48,9 @@ public class NoteDetailsActivity extends BaseActivity implements NoteDetailsCont
         }
 
         noteDetailsPresenter = new NoteDetailsPresenter(
+                this,
                 new NotesRepositoryImpl(NotesApplication.appDatabase)
         );
-        noteDetailsPresenter.attach(this);
 
         Integer noteId = getIntent().getIntExtra(INTENT_KEY_NOTE_ID, -1);
 
@@ -60,7 +60,6 @@ public class NoteDetailsActivity extends BaseActivity implements NoteDetailsCont
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        noteDetailsPresenter.detach();
     }
 
     @Override

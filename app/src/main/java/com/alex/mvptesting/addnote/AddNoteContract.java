@@ -14,7 +14,7 @@ public interface AddNoteContract {
 
     }
 
-    interface UserActionsListener extends BasePresenter<View> {
+    interface UserActionsListener extends BasePresenter/*<View>*/ {
 
         void saveNote(String title, String text);
 

@@ -38,8 +38,7 @@ public class NoteDetailsPresenterTest {
     @Before
     public void setupNoteDetailsPresenter() {
         MockitoAnnotations.initMocks(this);
-        noteDetailsPresenter = new NoteDetailsPresenter(notesRepository);
-        noteDetailsPresenter.attach(noteDetailsView);
+        noteDetailsPresenter = new NoteDetailsPresenter(noteDetailsView, notesRepository);
     }
 
     @Test

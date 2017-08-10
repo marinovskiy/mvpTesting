@@ -19,7 +19,7 @@ public interface NotesContract {
 
     }
 
-    interface UserActionsListener extends BasePresenter<View> {
+    interface UserActionsListener extends BasePresenter/*<View>*/ {
 
         void loadNotes();
 

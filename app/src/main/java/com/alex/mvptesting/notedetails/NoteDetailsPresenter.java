@@ -2,8 +2,8 @@ package com.alex.mvptesting.notedetails;
 
 import android.support.annotation.Nullable;
 
-import com.alex.mvptesting.entities.Note;
 import com.alex.mvptesting.data.NotesRepository;
+import com.alex.mvptesting.entities.Note;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -14,28 +14,14 @@ import io.reactivex.schedulers.Schedulers;
 public class NoteDetailsPresenter implements NoteDetailsContract.UserActionsListener {
 
     @NonNull
+    private final NoteDetailsContract.View noteDetailsView;
+    @NonNull
     private final NotesRepository notesRepository;
 
-    @NonNull
-    private NoteDetailsContract.View noteDetailsView;
-
-    public NoteDetailsPresenter(NotesRepository notesRepository) {
+    public NoteDetailsPresenter(@NonNull NoteDetailsContract.View noteDetailsView,
+                                @NonNull NotesRepository notesRepository) {
+        this.noteDetailsView = noteDetailsView;
         this.notesRepository = notesRepository;
-    }
-
-    @Override
-    public void attach(NoteDetailsContract.View view) {
-        noteDetailsView = view;
-    }
-
-    @Override
-    public void detach() {
-        noteDetailsView = null;
-    }
-
-    @Override
-    public NoteDetailsContract.View getView() {
-        return null;
     }
 
     @Override

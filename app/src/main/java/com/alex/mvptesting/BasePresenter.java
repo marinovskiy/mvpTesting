@@ -1,11 +1,11 @@
 package com.alex.mvptesting;
 
-public interface BasePresenter<V> {
+public interface BasePresenter/*<V>*/ {
 
-    void attach(V view);
-
-    void detach();
-
-    V getView();
+//    void attach(V view);
+//
+//    void detach();
+//
+//    V getView();
 
 }

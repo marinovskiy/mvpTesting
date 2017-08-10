@@ -19,7 +19,7 @@ public interface NoteDetailsContract {
 
     }
 
-    interface UserActionsListener extends BasePresenter<View> {
+    interface UserActionsListener extends BasePresenter/*<View>*/ {
 
         void getNote(@Nullable Integer noteId);
 
