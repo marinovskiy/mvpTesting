@@ -1,4 +1,4 @@
-package com.alex.mvptesting.data.source.local;
+package com.alex.mvptesting.db;
 
 public final class DatabaseInfo {
 

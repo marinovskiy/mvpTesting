@@ -1,4 +1,4 @@
-package com.alex.mvptesting.data;
+package com.alex.mvptesting.data.repository;
 
 import com.alex.mvptesting.entities.Note;
 
@@ -10,10 +10,10 @@ import io.reactivex.Single;
 
 public interface NotesRepository {
 
-    Completable addNote(Note note);
-
     Flowable<List<Note>> getAllNotes();
 
     Single<Note> getNoteById(Integer noteId);
+
+    Completable addNote(Note note);
 
 }

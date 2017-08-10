@@ -1,6 +1,8 @@
 package com.alex.mvptesting.data;
 
-import com.alex.mvptesting.data.source.local.AppDatabase;
+import com.alex.mvptesting.data.repository.NotesRepository;
+import com.alex.mvptesting.data.repository.NotesRepositoryImpl;
+import com.alex.mvptesting.data.source.NoteDataSource;
 import com.alex.mvptesting.entities.Note;
 
 import org.junit.Before;
@@ -12,47 +14,54 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
+import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
-import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class NotesRepositoryTest {
 
     private final List<Note> NOTES = Collections.singletonList(new Note("Title", "Text"));
+    private final Note NOTE = new Note("Title", "Text");
+    private final Integer NOTE_ID = 1;
 
     @Mock
-    private AppDatabase appDatabase;
+    private NoteDataSource noteLocalDataSource;
 
     private NotesRepository notesRepository;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        notesRepository = new NotesRepositoryImpl(appDatabase);
+        notesRepository = new NotesRepositoryImpl(noteLocalDataSource);
     }
 
     @Test
-    public void testGetAllNotes() {
-        when(notesRepository.getAllNotes()).thenReturn(Flowable.just(NOTES));
+    public void loadNotes_requestAllNotesFromLocalDataSource() {
+        when(noteLocalDataSource.loadNotes()).thenReturn(Flowable.just(NOTES));
 
-        TestSubscriber<List<Note>> subscriber = new TestSubscriber<>();
-        notesRepository.getAllNotes().subscribe(subscriber);
-        subscriber.assertNoErrors();
-        subscriber.assertSubscribed();
-//        assertThat(subscriber.get).isEqualtTo(NOTES));
+        TestSubscriber<List<Note>> testSubscriber = new TestSubscriber<>();
+        notesRepository.getAllNotes().subscribe(testSubscriber);
 
-//        verify(notesRepository).get
-
-//        assertThat();
+        verify(noteLocalDataSource).loadNotes();
+        testSubscriber.assertValue(NOTES);
     }
-//
-//    @Test
-//    public void testAddNote() {
-//        Note note = new Note("Title", "Text");
-//
-//        notesRepository.addNote(note);
-//
-//        verify(appDatabase).noteDao().insert(note);
-//    }
+
+    @Test
+    public void loadNoteById_requestNoteByIdFromLocalDataSource() {
+        when(noteLocalDataSource.loadNoteById(NOTE_ID)).thenReturn(Single.just(NOTE));
+
+        TestObserver<Note> testObserver = new TestObserver<>();
+        notesRepository.getNoteById(NOTE_ID).subscribe(testObserver);
+
+        verify(noteLocalDataSource).loadNoteById(NOTE_ID);
+        testObserver.assertValue(NOTE);
+    }
+
+    @Test
+    public void insertNote_requestInsertNoteFromLocalDataSource() {
+        notesRepository.addNote(NOTE);
+    }
 }

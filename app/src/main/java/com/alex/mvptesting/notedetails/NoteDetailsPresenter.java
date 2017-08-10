@@ -2,7 +2,7 @@ package com.alex.mvptesting.notedetails;
 
 import android.support.annotation.Nullable;
 
-import com.alex.mvptesting.data.NotesRepository;
+import com.alex.mvptesting.data.repository.NotesRepository;
 import com.alex.mvptesting.entities.Note;
 
 import io.reactivex.SingleObserver;

@@ -1,6 +1,6 @@
 package com.alex.mvptesting.addnote;
 
-import com.alex.mvptesting.data.NotesRepository;
+import com.alex.mvptesting.data.repository.NotesRepository;
 import com.alex.mvptesting.entities.Note;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

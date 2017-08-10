@@ -3,8 +3,8 @@ package com.alex.mvptesting.application;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
-import com.alex.mvptesting.data.source.local.AppDatabase;
-import com.alex.mvptesting.data.source.local.DatabaseInfo;
+import com.alex.mvptesting.db.AppDatabase;
+import com.alex.mvptesting.db.DatabaseInfo;
 
 public class NotesApplication extends Application {
 

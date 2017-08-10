@@ -1,4 +1,4 @@
-package com.alex.mvptesting.data.source.local.dao;
+package com.alex.mvptesting.db.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;

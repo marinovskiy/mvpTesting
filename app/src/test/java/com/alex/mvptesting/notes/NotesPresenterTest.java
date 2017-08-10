@@ -1,7 +1,7 @@
 package com.alex.mvptesting.notes;
 
 import com.alex.mvptesting.ImmediateSchedulerRule;
-import com.alex.mvptesting.data.NotesRepository;
+import com.alex.mvptesting.data.repository.NotesRepository;
 import com.alex.mvptesting.entities.Note;
 import com.google.common.collect.Lists;
 

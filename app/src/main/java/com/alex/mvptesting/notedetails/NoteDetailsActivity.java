@@ -12,8 +12,9 @@ import android.widget.Toast;
 import com.alex.mvptesting.R;
 import com.alex.mvptesting.activities.BaseActivity;
 import com.alex.mvptesting.application.NotesApplication;
+import com.alex.mvptesting.data.source.local.NoteLocalDataSource;
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.data.NotesRepositoryImpl;
+import com.alex.mvptesting.data.repository.NotesRepositoryImpl;
 
 import butterknife.BindView;
 
@@ -49,7 +50,9 @@ public class NoteDetailsActivity extends BaseActivity implements NoteDetailsCont
 
         noteDetailsPresenter = new NoteDetailsPresenter(
                 this,
-                new NotesRepositoryImpl(NotesApplication.appDatabase)
+                new NotesRepositoryImpl(
+                        new NoteLocalDataSource(NotesApplication.appDatabase.noteDao())
+                )
         );
 
         Integer noteId = getIntent().getIntExtra(INTENT_KEY_NOTE_ID, -1);

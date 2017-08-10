@@ -10,7 +10,8 @@ import android.widget.Toast;
 import com.alex.mvptesting.R;
 import com.alex.mvptesting.activities.BaseActivity;
 import com.alex.mvptesting.application.NotesApplication;
-import com.alex.mvptesting.data.NotesRepositoryImpl;
+import com.alex.mvptesting.data.repository.NotesRepositoryImpl;
+import com.alex.mvptesting.data.source.local.NoteLocalDataSource;
 
 import butterknife.BindView;
 
@@ -40,7 +41,9 @@ public class AddNoteActivity extends BaseActivity implements AddNoteContract.Vie
 
         addNotePresenter = new AddNotePresenter(
                 this,
-                new NotesRepositoryImpl(NotesApplication.appDatabase)
+                new NotesRepositoryImpl(
+                        new NoteLocalDataSource(NotesApplication.appDatabase.noteDao())
+                )
         );
     }
 

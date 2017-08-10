@@ -13,8 +13,9 @@ import com.alex.mvptesting.adapters.NotesRecyclerViewAdapter;
 import com.alex.mvptesting.adapters.OnItemClickListener;
 import com.alex.mvptesting.addnote.AddNoteActivity;
 import com.alex.mvptesting.application.NotesApplication;
+import com.alex.mvptesting.data.repository.NotesRepositoryImpl;
+import com.alex.mvptesting.data.source.local.NoteLocalDataSource;
 import com.alex.mvptesting.entities.Note;
-import com.alex.mvptesting.data.NotesRepositoryImpl;
 import com.alex.mvptesting.notedetails.NoteDetailsActivity;
 
 import java.util.List;
@@ -43,9 +44,10 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
 
         notesPresenter = new NotesPresenter(
                 this,
-                new NotesRepositoryImpl(NotesApplication.appDatabase)
+                new NotesRepositoryImpl(
+                        new NoteLocalDataSource(NotesApplication.appDatabase.noteDao())
+                )
         );
-//        notesPresenter.attach(this);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -75,7 +77,6 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        notesPresenter.detach();
     }
 
     @OnClick(R.id.fab_add_note)
