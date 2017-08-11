@@ -60,8 +60,15 @@ public class NotesRepositoryTest {
         testObserver.assertValue(NOTE);
     }
 
+    //TODO need to check result
     @Test
     public void insertNote_requestInsertNoteFromLocalDataSource() {
         notesRepository.addNote(NOTE);
+////        assertThat(notesRepository.getAllNotes().blockingSingle().size(), is(1));
+//
+//        TestSubscriber<List<Note>> testSubscriber = new TestSubscriber<>();
+//        notesRepository.getAllNotes().subscribe(testSubscriber);
+//
+//        assertThat(testSubscriber.values().size(), is(1));
     }
 }

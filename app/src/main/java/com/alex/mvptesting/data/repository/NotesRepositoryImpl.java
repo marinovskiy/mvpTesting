@@ -15,32 +15,6 @@ import io.reactivex.internal.operators.completable.CompletableFromAction;
 
 public class NotesRepositoryImpl implements NotesRepository {
 
-//    private final AppDatabase appDatabase;
-//
-//    public NotesRepositoryImpl(@NonNull AppDatabase appDatabase) {
-//        this.appDatabase = appDatabase;
-//    }
-//
-//    @Override
-//    public Flowable<List<Note>> getAllNotes() {
-//        return appDatabase.noteDao().getAll();
-//    }
-//
-//    @Override
-//    public Single<Note> getNoteById(Integer noteId) {
-//        return appDatabase.noteDao().getById(noteId);
-//    }
-//
-//    @Override
-//    public Completable addNote(final Note note) {
-//        return new CompletableFromAction(new Action() {
-//            @Override
-//            public void run() throws Exception {
-//                appDatabase.noteDao().insert(note);
-//            }
-//        });
-//    }
-
     @NonNull
     private final NoteDataSource noteLocalDataSource;
 
