@@ -3,11 +3,12 @@ package com.alex.mvptesting.notedetails;
 import android.support.annotation.Nullable;
 
 import com.alex.mvptesting.BasePresenter;
+import com.alex.mvptesting.BaseView;
 import com.alex.mvptesting.entities.Note;
 
-public interface NoteDetailsContract {
+interface NoteDetailsContract {
 
-    interface View {
+    interface View extends BaseView {
 
         void setProgressIndicator(boolean active);
 
@@ -19,7 +20,7 @@ public interface NoteDetailsContract {
 
     }
 
-    interface UserActionsListener extends BasePresenter/*<View>*/ {
+    interface Presenter extends BasePresenter<View> {
 
         void getNote(@Nullable Integer noteId);
 

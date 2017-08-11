@@ -1,11 +1,17 @@
 package com.alex.mvptesting;
 
-public interface BasePresenter/*<V>*/ {
+import io.reactivex.disposables.Disposable;
 
-//    void attach(V view);
-//
-//    void detach();
-//
-//    V getView();
+public interface BasePresenter<V> {
+
+    void attach(V view);
+
+    V getView();
+
+    boolean isViewAttached();
+
+    void detach();
+
+    void addSubscription(Disposable disposable);
 
 }

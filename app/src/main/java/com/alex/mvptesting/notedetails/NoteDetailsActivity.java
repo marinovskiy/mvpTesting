@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alex.mvptesting.R;
-import com.alex.mvptesting.activities.BaseActivity;
+import com.alex.mvptesting.BaseActivity;
 import com.alex.mvptesting.application.NotesApplication;
 import com.alex.mvptesting.data.source.local.NoteLocalDataSource;
 import com.alex.mvptesting.entities.Note;
@@ -33,7 +33,7 @@ public class NoteDetailsActivity extends BaseActivity implements NoteDetailsCont
     @BindView(R.id.pb_note_details)
     ProgressBar pbNoteDetails;
 
-    private NoteDetailsContract.UserActionsListener noteDetailsPresenter;
+    private NoteDetailsContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +48,21 @@ public class NoteDetailsActivity extends BaseActivity implements NoteDetailsCont
             getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
 
-        noteDetailsPresenter = new NoteDetailsPresenter(
-                this,
+        presenter = new NoteDetailsPresenter(
                 new NotesRepositoryImpl(
                         new NoteLocalDataSource(NotesApplication.appDatabase.noteDao())
                 )
         );
+        presenter.attach(this);
 
         Integer noteId = getIntent().getIntExtra(INTENT_KEY_NOTE_ID, -1);
 
-        noteDetailsPresenter.getNote(noteId);
+        presenter.getNote(noteId);
     }
 
     @Override
     protected void onDestroy() {
+        presenter.detach();
         super.onDestroy();
     }
 

@@ -2,6 +2,7 @@ package com.alex.mvptesting.notedetails;
 
 import android.support.annotation.Nullable;
 
+import com.alex.mvptesting.AbstractPresenter;
 import com.alex.mvptesting.data.repository.NotesRepository;
 import com.alex.mvptesting.entities.Note;
 
@@ -11,47 +12,55 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class NoteDetailsPresenter implements NoteDetailsContract.UserActionsListener {
+class NoteDetailsPresenter extends AbstractPresenter<NoteDetailsContract.View>
+        implements NoteDetailsContract.Presenter {
 
-    @NonNull
-    private final NoteDetailsContract.View noteDetailsView;
     @NonNull
     private final NotesRepository notesRepository;
 
-    public NoteDetailsPresenter(@NonNull NoteDetailsContract.View noteDetailsView,
-                                @NonNull NotesRepository notesRepository) {
-        this.noteDetailsView = noteDetailsView;
+    NoteDetailsPresenter(@NonNull NotesRepository notesRepository) {
         this.notesRepository = notesRepository;
     }
 
     @Override
     public void getNote(@Nullable Integer noteId) {
         if (null == noteId || -1 == noteId) {
-            noteDetailsView.showMissingNote();
+            if (isViewAttached()) {
+                getView().showMissingNote();
+            }
             return;
         }
 
-        noteDetailsView.setProgressIndicator(true);
+        if (isViewAttached()) {
+            getView().setProgressIndicator(true);
+        }
 
-        notesRepository.getNoteById(noteId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<Note>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                    }
+        //TODO addSubscription()
+//        addSubscription(
+                notesRepository.getNoteById(noteId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new SingleObserver<Note>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+                            }
 
-                    @Override
-                    public void onSuccess(@NonNull Note note) {
-                        noteDetailsView.setProgressIndicator(false);
-                        noteDetailsView.showNote(note);
-                    }
+                            @Override
+                            public void onSuccess(@NonNull Note note) {
+                                if (isViewAttached()) {
+                                    getView().setProgressIndicator(false);
+                                    getView().showNote(note);
+                                }
+                            }
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        noteDetailsView.setProgressIndicator(false);
-                        noteDetailsView.showError(e.getMessage());
-                    }
-                });
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                if (isViewAttached()) {
+                                    getView().setProgressIndicator(false);
+                                    getView().showError(e.getMessage());
+                                }
+                            }
+                        });
+//        );
     }
 }

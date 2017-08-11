@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.alex.mvptesting.R;
-import com.alex.mvptesting.activities.BaseActivity;
+import com.alex.mvptesting.BaseActivity;
 import com.alex.mvptesting.adapters.NotesRecyclerViewAdapter;
 import com.alex.mvptesting.adapters.OnItemClickListener;
 import com.alex.mvptesting.addnote.AddNoteActivity;
@@ -32,7 +32,7 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
     @BindView(R.id.rv_notes)
     RecyclerView rvNotes;
 
-    private NotesContract.UserActionsListener notesPresenter;
+    private NotesContract.Presenter presenter;
 
     private GridLayoutManager gridLayoutManager;
     private NotesRecyclerViewAdapter rvNotesAdapter;
@@ -42,12 +42,12 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        notesPresenter = new NotesPresenter(
-                this,
+        presenter = new NotesPresenter(
                 new NotesRepositoryImpl(
                         new NoteLocalDataSource(NotesApplication.appDatabase.noteDao())
                 )
         );
+        presenter.attach(this);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -59,7 +59,7 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
         gridLayoutManager = new GridLayoutManager(this, 2);
         rvNotes.setLayoutManager(gridLayoutManager);
 
-        notesPresenter.loadNotes();
+        presenter.loadNotes();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
             switch (requestCode) {
                 case REQUEST_CODE_ADD_NOTE:
                     // reload notes
-                    notesPresenter.loadNotes();
+                    presenter.loadNotes();
                     break;
             }
         }
@@ -76,12 +76,13 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
 
     @Override
     protected void onDestroy() {
+        presenter.detach();
         super.onDestroy();
     }
 
     @OnClick(R.id.fab_add_note)
     public void onViewClicked() {
-        notesPresenter.showAddNoteActivity();
+        presenter.showAddNoteActivity();
     }
 
     @Override
@@ -93,7 +94,7 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
             rvNotesAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    notesPresenter.showNoteDetailsActivity(
+                    presenter.showNoteDetailsActivity(
                             rvNotesAdapter.getNotes().get(position).getId()
                     );
                 }

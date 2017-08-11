@@ -1,4 +1,4 @@
-package com.alex.mvptesting.activities;
+package com.alex.mvptesting;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;

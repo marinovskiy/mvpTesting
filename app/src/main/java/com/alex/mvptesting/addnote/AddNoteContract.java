@@ -1,10 +1,11 @@
 package com.alex.mvptesting.addnote;
 
 import com.alex.mvptesting.BasePresenter;
+import com.alex.mvptesting.BaseView;
 
-public interface AddNoteContract {
+interface AddNoteContract {
 
-    interface View {
+    interface View extends BaseView {
 
         void showEmptyNoteError();
 
@@ -14,7 +15,7 @@ public interface AddNoteContract {
 
     }
 
-    interface UserActionsListener extends BasePresenter/*<View>*/ {
+    interface Presenter extends BasePresenter<View> {
 
         void saveNote(String title, String text);
 

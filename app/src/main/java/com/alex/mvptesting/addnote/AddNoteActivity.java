@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.alex.mvptesting.R;
-import com.alex.mvptesting.activities.BaseActivity;
+import com.alex.mvptesting.BaseActivity;
 import com.alex.mvptesting.application.NotesApplication;
 import com.alex.mvptesting.data.repository.NotesRepositoryImpl;
 import com.alex.mvptesting.data.source.local.NoteLocalDataSource;
@@ -24,7 +24,7 @@ public class AddNoteActivity extends BaseActivity implements AddNoteContract.Vie
     @BindView(R.id.et_note_text)
     EditText etNoteText;
 
-    private AddNoteContract.UserActionsListener addNotePresenter;
+    private AddNoteContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +39,17 @@ public class AddNoteActivity extends BaseActivity implements AddNoteContract.Vie
             getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
 
-        addNotePresenter = new AddNotePresenter(
-                this,
+        presenter = new AddNotePresenter(
                 new NotesRepositoryImpl(
                         new NoteLocalDataSource(NotesApplication.appDatabase.noteDao())
                 )
         );
+        presenter.attach(this);
     }
 
     @Override
     protected void onDestroy() {
+        presenter.detach();
         super.onDestroy();
     }
 
@@ -66,7 +67,7 @@ public class AddNoteActivity extends BaseActivity implements AddNoteContract.Vie
                 finish();
                 return true;
             case R.id.action_add_note:
-                addNotePresenter.saveNote(getNoteTitle(), getNoteText());
+                presenter.saveNote(getNoteTitle(), getNoteText());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
