@@ -15,9 +15,12 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Predicate;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -62,8 +65,17 @@ public class NotesRepositoryTest {
 
     //TODO need to check result
     @Test
-    public void insertNote_requestInsertNoteFromLocalDataSource() {
+    public void insertNote_insertNoteFromLocalDataSource() {
         notesRepository.addNote(NOTE);
+
+//        notesRepository.getNoteById(NOTE_ID)
+//                .test()
+//                .assertValue(new Predicate<Note>() {
+//                    @Override
+//                    public boolean test(@NonNull Note note) throws Exception {
+//                        return note.equals(NOTE);
+//                    }
+//                });
 ////        assertThat(notesRepository.getAllNotes().blockingSingle().size(), is(1));
 //
 //        TestSubscriber<List<Note>> testSubscriber = new TestSubscriber<>();
