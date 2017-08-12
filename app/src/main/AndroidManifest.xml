@@ -20,10 +20,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".addnote.AddNoteActivity"
+            android:name=".addnote.AddEditNoteActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".notedetails.NoteDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".settings.SettingsActivity"
             android:screenOrientation="portrait" />
     </application>
 

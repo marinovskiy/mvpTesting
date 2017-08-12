@@ -17,7 +17,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class AddNotePresenterTest {
+public class AddEditNotePresenterTest {
 
     private final Note EMPTY_NOTE = new Note(null, "");
     private final Note NOTE = new Note("title", "text");
@@ -26,9 +26,9 @@ public class AddNotePresenterTest {
     private NotesRepository notesRepository;
 
     @Mock
-    private AddNoteContract.View addNoteView;
+    private AddEditNoteContract.View addNoteView;
 
-    private AddNotePresenter addNotePresenter;
+    private AddEditNotePresenter addEditNotePresenter;
 
     @Rule
     public ImmediateSchedulerRule immediateSchedulerRule = new ImmediateSchedulerRule();
@@ -37,13 +37,13 @@ public class AddNotePresenterTest {
     public void setupAddNotePresenter() {
         MockitoAnnotations.initMocks(this);
 
-        addNotePresenter = new AddNotePresenter(notesRepository);
-        addNotePresenter.attach(addNoteView);
+        addEditNotePresenter = new AddEditNotePresenter(notesRepository);
+        addEditNotePresenter.attach(addNoteView);
     }
 
     @Test
     public void addNote_showsEmptyNoteError() {
-        addNotePresenter.saveNote(EMPTY_NOTE.getTitle(), EMPTY_NOTE.getText());
+        addEditNotePresenter.saveNote(EMPTY_NOTE.getTitle(), EMPTY_NOTE.getText());
 
         verify(addNoteView).showEmptyNoteError();
     }
@@ -52,17 +52,17 @@ public class AddNotePresenterTest {
     public void addNote_closeAddNoteActivity() {
         when(notesRepository.addNote(NOTE)).thenReturn(Completable.complete());
 
-        addNotePresenter.saveNote(NOTE.getTitle(), NOTE.getText());
+        addEditNotePresenter.saveNote(NOTE.getTitle(), NOTE.getText());
 
         verify(notesRepository).addNote(NOTE);
-        verify(addNoteView).closeAddNoteActivity();
+        verify(addNoteView).closeAddEditNoteActivity();
     }
 
     @Test
     public void loadNotesFromRepositoryAndShowError() {
         when(notesRepository.addNote(NOTE)).thenReturn(CompletableFromAction.error(new Throwable()));
 
-        addNotePresenter.saveNote(NOTE.getTitle(), NOTE.getText());
+        addEditNotePresenter.saveNote(NOTE.getTitle(), NOTE.getText());
 
         verify(notesRepository).addNote(NOTE);
         verify(addNoteView).showError(any());

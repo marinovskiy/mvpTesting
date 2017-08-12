@@ -2,4 +2,8 @@
     <string name="app_name">mvpTesting</string>
     <string name="empty_note_msg">Note cannot be empty</string>
     <string name="error_occurred_try_later_msg">An error occurred, Please try later</string>
+    <string name="no_data">No data</string>
+    <string name="want_to_delete_note">Do you really want to delete this note?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

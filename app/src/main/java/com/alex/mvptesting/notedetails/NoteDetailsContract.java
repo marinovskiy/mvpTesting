@@ -14,6 +14,8 @@ interface NoteDetailsContract {
 
         void showNote(Note note);
 
+        void showDeletedSuccessfulMessageAndCloseNoteDetailsActivity();
+
         void showMissingNote();
 
         void showError(String message);
@@ -23,6 +25,8 @@ interface NoteDetailsContract {
     interface Presenter extends BasePresenter<View> {
 
         void getNote(@Nullable Integer noteId);
+
+        void deleteNoteById(@Nullable Integer noteId);
 
     }
 }

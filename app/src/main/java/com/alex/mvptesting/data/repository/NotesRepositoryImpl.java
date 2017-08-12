@@ -1,16 +1,13 @@
 package com.alex.mvptesting.data.repository;
 
 import com.alex.mvptesting.data.source.NoteDataSource;
-import com.alex.mvptesting.db.AppDatabase;
 import com.alex.mvptesting.entities.Note;
 
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Action;
 import io.reactivex.internal.operators.completable.CompletableFromAction;
 
 public class NotesRepositoryImpl implements NotesRepository {
@@ -28,12 +25,27 @@ public class NotesRepositoryImpl implements NotesRepository {
     }
 
     @Override
-    public Single<Note> getNoteById(Integer noteId) {
+    public Flowable<Note> getNoteById(Integer noteId) {
         return noteLocalDataSource.loadNoteById(noteId);
     }
 
     @Override
     public Completable addNote(Note note) {
         return new CompletableFromAction(() -> noteLocalDataSource.addNewNote(note));
+    }
+
+    @Override
+    public Completable updateNote(Note note) {
+        return new CompletableFromAction(() -> noteLocalDataSource.updateNote(note));
+    }
+
+    @Override
+    public Completable deleteNoteById(Integer noteId) {
+        return new CompletableFromAction(() -> noteLocalDataSource.deleteNoteById(noteId));
+    }
+
+    @Override
+    public Completable deleteAllNotes() {
+        return new CompletableFromAction(noteLocalDataSource::deleteAllNotes);
     }
 }

@@ -5,14 +5,19 @@ import com.alex.mvptesting.entities.Note;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 
 public interface NoteDataSource {
 
     Flowable<List<Note>> loadNotes();
 
-    Single<Note> loadNoteById(int noteId);
+    Flowable<Note> loadNoteById(int noteId);
 
     void addNewNote(Note note);
+
+    void updateNote(Note note);
+
+    void deleteNoteById(Integer noteId);
+
+    void deleteAllNotes();
 
 }

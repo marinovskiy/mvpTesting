@@ -6,14 +6,19 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 
 public interface NotesRepository {
 
     Flowable<List<Note>> getAllNotes();
 
-    Single<Note> getNoteById(Integer noteId);
+    Flowable<Note> getNoteById(Integer noteId);
 
     Completable addNote(Note note);
+
+    Completable updateNote(Note note);
+
+    Completable deleteNoteById(Integer noteId);
+
+    Completable deleteAllNotes();
 
 }

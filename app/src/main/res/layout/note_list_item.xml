@@ -19,7 +19,7 @@
             android:id="@+id/tv_note_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="#000000"
+            android:textColor="#000000"
             android:textSize="15sp"
             tools:text="TODO list" />
 
@@ -30,7 +30,6 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="3"
-            android:text="#000000"
             android:textSize="14sp"
             tools:text="1. Go to the shop\n2. Wash up dishes\n3. Fix the car..." />
 

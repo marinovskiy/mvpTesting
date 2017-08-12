@@ -7,7 +7,6 @@ import com.alex.mvptesting.entities.Note;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 
 public class NoteLocalDataSource implements NoteDataSource {
@@ -25,12 +24,27 @@ public class NoteLocalDataSource implements NoteDataSource {
     }
 
     @Override
-    public Single<Note> loadNoteById(int noteId) {
+    public Flowable<Note> loadNoteById(int noteId) {
         return noteDao.getById(noteId);
     }
 
     @Override
     public void addNewNote(Note note) {
         noteDao.insert(note);
+    }
+
+    @Override
+    public void updateNote(Note note) {
+        noteDao.update(note);
+    }
+
+    @Override
+    public void deleteNoteById(Integer noteId) {
+        noteDao.deleteById(noteId);
+    }
+
+    @Override
+    public void deleteAllNotes() {
+        noteDao.deleteAll();
     }
 }

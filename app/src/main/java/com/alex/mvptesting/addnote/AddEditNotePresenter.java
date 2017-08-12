@@ -1,22 +1,50 @@
-package com.alex.mvptesting.notedetails;
+package com.alex.mvptesting.addnote;
 
 import android.support.annotation.Nullable;
 
 import com.alex.mvptesting.AbstractPresenter;
 import com.alex.mvptesting.data.repository.NotesRepository;
+import com.alex.mvptesting.entities.Note;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
-class NoteDetailsPresenter extends AbstractPresenter<NoteDetailsContract.View>
-        implements NoteDetailsContract.Presenter {
+class AddEditNotePresenter extends AbstractPresenter<AddEditNoteContract.View>
+        implements AddEditNoteContract.Presenter {
 
     @NonNull
     private final NotesRepository notesRepository;
 
-    NoteDetailsPresenter(@NonNull NotesRepository notesRepository) {
+    AddEditNotePresenter(@NonNull NotesRepository notesRepository) {
         this.notesRepository = notesRepository;
+    }
+
+    @Override
+    public void saveNote(String title, String text) {
+        Note newNote = new Note(title, text);
+        if (newNote.isEmpty()) {
+            if (isViewAttached()) {
+                getView().showEmptyNoteError();
+            }
+            return;
+        }
+
+        addSubscription(
+                notesRepository.addNote(newNote)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                                    if (isViewAttached()) {
+                                        getView().closeAddEditNoteActivity();
+                                    }
+                                },
+                                throwable -> {
+                                    if (isViewAttached()) {
+                                        getView().showError(throwable.getMessage());
+                                    }
+                                })
+        );
     }
 
     @Override
@@ -56,21 +84,24 @@ class NoteDetailsPresenter extends AbstractPresenter<NoteDetailsContract.View>
     }
 
     @Override
-    public void deleteNoteById(@Nullable Integer noteId) {
-        if (null == noteId) {
+    public void updateNote(Integer id, String title, String text) {
+        Note note = new Note(title, text);
+        note.setId(id);
+
+        if (note.isEmpty()) {
             if (isViewAttached()) {
-                getView().showMissingNote();
+                getView().showEmptyNoteError();
             }
             return;
         }
 
         addSubscription(
-                notesRepository.deleteNoteById(noteId)
+                notesRepository.updateNote(note)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                             if (isViewAttached()) {
-                                getView().showDeletedSuccessfulMessageAndCloseNoteDetailsActivity();
+                                getView().closeAddEditNoteActivity();
                             }
                         }, throwable -> {
                             if (isViewAttached()) {

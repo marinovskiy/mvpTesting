@@ -5,18 +5,20 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.alex.mvptesting.R;
 import com.alex.mvptesting.BaseActivity;
+import com.alex.mvptesting.R;
 import com.alex.mvptesting.adapters.NotesRecyclerViewAdapter;
-import com.alex.mvptesting.adapters.OnItemClickListener;
-import com.alex.mvptesting.addnote.AddNoteActivity;
+import com.alex.mvptesting.addnote.AddEditNoteActivity;
 import com.alex.mvptesting.application.NotesApplication;
 import com.alex.mvptesting.data.repository.NotesRepositoryImpl;
 import com.alex.mvptesting.data.source.local.NoteLocalDataSource;
 import com.alex.mvptesting.entities.Note;
 import com.alex.mvptesting.notedetails.NoteDetailsActivity;
+import com.alex.mvptesting.settings.SettingsActivity;
 
 import java.util.List;
 
@@ -25,8 +27,6 @@ import butterknife.OnClick;
 
 public class NotesActivity extends BaseActivity implements NotesContract.View {
 
-    private static final int REQUEST_CODE_ADD_NOTE = 1001;
-
     @BindView(R.id.toolbar_main)
     Toolbar toolbar;
     @BindView(R.id.rv_notes)
@@ -34,13 +34,12 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
 
     private NotesContract.Presenter presenter;
 
-    private GridLayoutManager gridLayoutManager;
     private NotesRecyclerViewAdapter rvNotesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_notes);
 
         presenter = new NotesPresenter(
                 new NotesRepositoryImpl(
@@ -56,28 +55,32 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
 //            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        gridLayoutManager = new GridLayoutManager(this, 2);
-        rvNotes.setLayoutManager(gridLayoutManager);
+        rvNotes.setLayoutManager(new GridLayoutManager(this, 2));
 
         presenter.loadNotes();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_CODE_ADD_NOTE:
-                    // reload notes
-                    presenter.loadNotes();
-                    break;
-            }
-        }
     }
 
     @Override
     protected void onDestroy() {
         presenter.detach();
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_notes, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @OnClick(R.id.fab_add_note)
@@ -91,14 +94,9 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
             rvNotesAdapter = new NotesRecyclerViewAdapter(notes);
             rvNotes.setAdapter(rvNotesAdapter);
 
-            rvNotesAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    presenter.showNoteDetailsActivity(
-                            rvNotesAdapter.getNotes().get(position).getId()
-                    );
-                }
-            });
+            rvNotesAdapter.setOnItemClickListener(position -> presenter.showNoteDetailsActivity(
+                    rvNotesAdapter.getNotes().get(position).getId()
+            ));
         } else {
             rvNotesAdapter.updateNotes(notes);
         }
@@ -111,10 +109,7 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
 
     @Override
     public void showAddNoteActivity() {
-        startActivityForResult(
-                new Intent(this, AddNoteActivity.class),
-                REQUEST_CODE_ADD_NOTE
-        );
+        startActivity(new Intent(this, AddEditNoteActivity.class));
     }
 
     @Override

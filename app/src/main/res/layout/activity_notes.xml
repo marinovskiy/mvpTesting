@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:elevation="4dp"
-            app:title="Notes123"
+            app:title="Notes"
             app:titleTextColor="#FFFFFF" />
 
     </android.support.design.widget.AppBarLayout>
