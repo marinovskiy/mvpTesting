@@ -12,6 +12,10 @@ interface NotesContract {
 
         void showNotes(List<Note> notes);
 
+        void showEmptyView();
+
+        void hideEmptyViewIfNeed();
+
         void showError();
 
         void showAddNoteActivity();

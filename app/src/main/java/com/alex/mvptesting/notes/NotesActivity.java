@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.alex.mvptesting.BaseActivity;
@@ -31,6 +33,8 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
     Toolbar toolbar;
     @BindView(R.id.rv_notes)
     RecyclerView rvNotes;
+    @BindView(R.id.ll_no_notes)
+    LinearLayout llNoNotes;
 
     private NotesContract.Presenter presenter;
 
@@ -99,6 +103,20 @@ public class NotesActivity extends BaseActivity implements NotesContract.View {
             ));
         } else {
             rvNotesAdapter.updateNotes(notes);
+        }
+    }
+
+    @Override
+    public void showEmptyView() {
+        rvNotes.setVisibility(View.GONE);
+        llNoNotes.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyViewIfNeed() {
+        if (llNoNotes.getVisibility() == View.VISIBLE) {
+            llNoNotes.setVisibility(View.GONE);
+            rvNotes.setVisibility(View.VISIBLE);
         }
     }
 

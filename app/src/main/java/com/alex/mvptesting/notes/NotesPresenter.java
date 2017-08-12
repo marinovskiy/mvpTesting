@@ -25,7 +25,12 @@ class NotesPresenter extends AbstractPresenter<NotesContract.View>
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(notes -> {
                             if (isViewAttached()) {
-                                getView().showNotes(notes);
+                                if (notes.isEmpty()) {
+                                    getView().showEmptyView();
+                                } else {
+                                    getView().hideEmptyViewIfNeed();
+                                    getView().showNotes(notes);
+                                }
                             }
                         }, throwable -> {
                             if (isViewAttached()) {

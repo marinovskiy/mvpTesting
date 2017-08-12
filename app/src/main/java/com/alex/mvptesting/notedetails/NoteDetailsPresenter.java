@@ -38,13 +38,8 @@ class NoteDetailsPresenter extends AbstractPresenter<NoteDetailsContract.View>
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(note -> {
                             if (isViewAttached()) {
-                                if (note != null) {
-                                    getView().setProgressIndicator(false);
-                                    getView().showNote(note);
-                                } else {
-                                    getView().setProgressIndicator(false);
-                                    getView().showMissingNote();
-                                }
+                                getView().setProgressIndicator(false);
+                                getView().showMissingNote();
                             }
                         }, throwable -> {
                             if (isViewAttached()) {
