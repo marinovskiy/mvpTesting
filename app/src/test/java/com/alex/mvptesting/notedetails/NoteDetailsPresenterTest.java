@@ -1,8 +1,8 @@
 package com.alex.mvptesting.notedetails;
 
 import com.alex.mvptesting.ImmediateSchedulerRule;
-import com.alex.mvptesting.entities.Note;
 import com.alex.mvptesting.data.repository.NotesRepository;
+import com.alex.mvptesting.entities.Note;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import io.reactivex.Single;
+import io.reactivex.Flowable;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -45,11 +45,11 @@ public class NoteDetailsPresenterTest {
 
     @Test
     public void getNoteFromRepositoryAndLoadIntoView() {
-        when(notesRepository.getNoteById(NOTE_ID_TEST)).thenReturn(Single.just(NOTE_TEST));
+        when(notesRepository.getNote(NOTE_ID_TEST)).thenReturn(Flowable.just(NOTE_TEST));
 
         noteDetailsPresenter.getNote(NOTE_ID_TEST);
 
-        verify(notesRepository).getNoteById(NOTE_ID_TEST);
+        verify(notesRepository).getNote(NOTE_ID_TEST);
 
         InOrder inOrder = Mockito.inOrder(noteDetailsView);
         inOrder.verify(noteDetailsView).setProgressIndicator(true);
@@ -66,7 +66,7 @@ public class NoteDetailsPresenterTest {
 
     @Test
     public void getNoteFromRepository_showError() {
-        when(notesRepository.getNoteById(NOTE_ID_TEST)).thenReturn(Single.error(new Throwable()));
+        when(notesRepository.getNote(NOTE_ID_TEST)).thenReturn(Flowable.error(new Throwable()));
 
         noteDetailsPresenter.getNote(NOTE_ID_TEST);
 

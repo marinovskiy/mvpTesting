@@ -12,7 +12,7 @@ public interface NoteDataSource {
 
     Flowable<Note> loadNoteById(int noteId);
 
-    void addNewNote(Note note);
+    void saveNote(Note note);
 
     void updateNote(Note note);
 

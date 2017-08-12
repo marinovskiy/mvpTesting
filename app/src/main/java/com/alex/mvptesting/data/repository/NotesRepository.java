@@ -11,9 +11,9 @@ public interface NotesRepository {
 
     Flowable<List<Note>> getAllNotes();
 
-    Flowable<Note> getNoteById(Integer noteId);
+    Flowable<Note> getNote(Integer noteId);
 
-    Completable addNote(Note note);
+    Completable saveNote(Note note);
 
     Completable updateNote(Note note);
 

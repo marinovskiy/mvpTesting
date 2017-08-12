@@ -25,13 +25,13 @@ public class NotesRepositoryImpl implements NotesRepository {
     }
 
     @Override
-    public Flowable<Note> getNoteById(Integer noteId) {
+    public Flowable<Note> getNote(Integer noteId) {
         return noteLocalDataSource.loadNoteById(noteId);
     }
 
     @Override
-    public Completable addNote(Note note) {
-        return new CompletableFromAction(() -> noteLocalDataSource.addNewNote(note));
+    public Completable saveNote(Note note) {
+        return new CompletableFromAction(() -> noteLocalDataSource.saveNote(note));
     }
 
     @Override

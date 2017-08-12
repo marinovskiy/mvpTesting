@@ -33,13 +33,13 @@ class NoteDetailsPresenter extends AbstractPresenter<NoteDetailsContract.View>
         }
 
         addSubscription(
-                notesRepository.getNoteById(noteId)
+                notesRepository.getNote(noteId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(note -> {
                             if (isViewAttached()) {
                                 getView().setProgressIndicator(false);
-                                getView().showMissingNote();
+                                getView().showNote(note);
                             }
                         }, throwable -> {
                             if (isViewAttached()) {

@@ -14,13 +14,8 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Single;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Predicate;
-import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -54,10 +49,10 @@ public class NotesRepositoryTest {
 
     @Test
     public void loadNoteById_requestNoteByIdFromLocalDataSource() {
-        when(noteLocalDataSource.loadNoteById(NOTE_ID)).thenReturn(Single.just(NOTE));
+        when(noteLocalDataSource.loadNoteById(NOTE_ID)).thenReturn(Flowable.just(NOTE));
 
-        TestObserver<Note> testObserver = new TestObserver<>();
-        notesRepository.getNoteById(NOTE_ID).subscribe(testObserver);
+        TestSubscriber<Note> testObserver = new TestSubscriber<>();
+        notesRepository.getNote(NOTE_ID).subscribe(testObserver);
 
         verify(noteLocalDataSource).loadNoteById(NOTE_ID);
         testObserver.assertValue(NOTE);
@@ -66,9 +61,9 @@ public class NotesRepositoryTest {
     //TODO need to check result
     @Test
     public void insertNote_insertNoteFromLocalDataSource() {
-        notesRepository.addNote(NOTE);
+        notesRepository.saveNote(NOTE);
 
-//        notesRepository.getNoteById(NOTE_ID)
+//        notesRepository.getNote(NOTE_ID)
 //                .test()
 //                .assertValue(new Predicate<Note>() {
 //                    @Override

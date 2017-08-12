@@ -29,7 +29,7 @@ public class NoteLocalDataSource implements NoteDataSource {
     }
 
     @Override
-    public void addNewNote(Note note) {
+    public void saveNote(Note note) {
         noteDao.insert(note);
     }
 
