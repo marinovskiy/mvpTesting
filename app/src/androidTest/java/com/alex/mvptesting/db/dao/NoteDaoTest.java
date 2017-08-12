@@ -14,10 +14,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
+
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Predicate;
-
-import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(AndroidJUnit4.class)
 public class NoteDaoTest {
@@ -49,7 +49,12 @@ public class NoteDaoTest {
     public void getNotesWhenNoNoteInserted() {
         appDatabase.noteDao().getAll()
                 .test()
-                .assertNoValues();
+                .assertValue(new Predicate<List<Note>>() {
+                    @Override
+                    public boolean test(@NonNull List<Note> notes) throws Exception {
+                        return notes.isEmpty();
+                    }
+                });
     }
 
     @Test
@@ -67,10 +72,17 @@ public class NoteDaoTest {
                 });
     }
 
-//    @Test
-//    public void getNotes() {
-//        appDatabase.noteDao().getAll()
-//                .test()
-//                .assertValues(any());
-//    }
+    @Test
+    public void getNotes() {
+        appDatabase.noteDao().insert(NOTE);
+
+        appDatabase.noteDao().getAll()
+                .test()
+                .assertValue(new Predicate<List<Note>>() {
+                    @Override
+                    public boolean test(@NonNull List<Note> notes) throws Exception {
+                        return !notes.isEmpty();
+                    }
+                });
+    }
 }

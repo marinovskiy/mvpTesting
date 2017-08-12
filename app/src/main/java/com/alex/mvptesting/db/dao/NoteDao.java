@@ -22,10 +22,16 @@ public interface NoteDao {
     @Query("SELECT * FROM notes WHERE id = (:noteId)")
     Single<Note> getById(int noteId);
 
+    @Query("SELECT * FROM notes WHERE id = (:noteId)")
+    Flowable<Note> getByIdF(int noteId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Note note);
 
     @Delete
     void delete(Note note);
+
+    @Query("DELETE FROM notes")
+    void deleteAll();
 
 }
