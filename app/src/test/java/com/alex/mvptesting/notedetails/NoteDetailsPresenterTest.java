@@ -12,7 +12,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.internal.operators.completable.CompletableFromAction;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -20,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 public class NoteDetailsPresenterTest {
 
-    private static final Integer NOTE_ID_INVALID_TEST = -1;
+    private static final Integer NOTE_ID_INVALID_TEST = null;
     private static final Integer NOTE_ID_TEST = 1;
     private static final Note NOTE_TEST = new Note("TitleTest", "TextTest");
 
@@ -74,5 +76,31 @@ public class NoteDetailsPresenterTest {
         inOrder.verify(noteDetailsView).setProgressIndicator(true);
         inOrder.verify(noteDetailsView).setProgressIndicator(false);
         inOrder.verify(noteDetailsView).showError(any());
+    }
+
+    @Test
+    public void deleteNote_showMissingNote() {
+        noteDetailsPresenter.deleteNoteById(NOTE_ID_INVALID_TEST);
+
+        verify(noteDetailsView).showMissingNote();
+    }
+
+    @Test
+    public void deleteNote_showSuccessMessageAndCloseNoteDetailsActivity() {
+        when(notesRepository.deleteNoteById(NOTE_ID_TEST)).thenReturn(Completable.complete());
+
+        noteDetailsPresenter.deleteNoteById(NOTE_ID_TEST);
+
+        verify(noteDetailsView).showDeletedSuccessfulMessageAndCloseNoteDetailsActivity();
+    }
+
+    @Test
+    public void deleteNote_showError() {
+        when(notesRepository.deleteNoteById(NOTE_ID_TEST))
+                .thenReturn(Completable.error(new Throwable()));
+
+        noteDetailsPresenter.deleteNoteById(NOTE_ID_TEST);
+
+        verify(noteDetailsView).showError(any());
     }
 }

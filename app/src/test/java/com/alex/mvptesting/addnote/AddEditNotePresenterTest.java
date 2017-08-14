@@ -84,7 +84,7 @@ public class AddEditNotePresenterTest {
     public void getNoteFromRepositoryAndShowIntoView() {
         when(notesRepository.getNote(NOTE_ID_TEST)).thenReturn(Flowable.just(NOTE_TEST));
 
-        notesRepository.getNote(NOTE_ID_TEST);
+        addEditNotePresenter.getNote(NOTE_ID_TEST);
 
         verify(notesRepository).getNote(NOTE_ID_TEST);
 
@@ -121,14 +121,14 @@ public class AddEditNotePresenterTest {
         verify(addNoteView).closeAddEditNoteActivity();
     }
 
-//    @Test
-//    public void updateNote_showError() {
-//        when(notesRepository.updateNote(NOTE_TEST))
-//                .thenReturn(CompletableFromAction.error(new Throwable()));
-//
-//        addEditNotePresenter.updateNote(NOTE_ID_TEST, NOTE_TEST.getTitle(), NOTE_TEST.getText());
-//
-//        verify(notesRepository).updateNote(NOTE_TEST);
-//        verify(addNoteView).showError(any());
-//    }
+    @Test
+    public void updateNote_showError() {
+        when(notesRepository.updateNote(NOTE_TEST))
+                .thenReturn(CompletableFromAction.error(new Throwable()));
+
+        addEditNotePresenter.updateNote(NOTE_ID_TEST, NOTE_TEST.getTitle(), NOTE_TEST.getText());
+
+        verify(notesRepository).updateNote(NOTE_TEST);
+        verify(addNoteView).showError(any());
+    }
 }

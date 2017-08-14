@@ -35,15 +35,14 @@ class AddEditNotePresenter extends AbstractPresenter<AddEditNoteContract.View>
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
-                                    if (isViewAttached()) {
-                                        getView().closeAddEditNoteActivity();
-                                    }
-                                },
-                                throwable -> {
-                                    if (isViewAttached()) {
-                                        getView().showError(throwable.getMessage());
-                                    }
-                                })
+                            if (isViewAttached()) {
+                                getView().closeAddEditNoteActivity();
+                            }
+                        }, throwable -> {
+                            if (isViewAttached()) {
+                                getView().showError(throwable.getMessage());
+                            }
+                        })
         );
     }
 

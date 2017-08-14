@@ -81,18 +81,4 @@ public class NotesPresenterTest {
         verify(notesRepository).getAllNotes();
         verify(notesView).showError();
     }
-
-//    @Test
-//    public void attachTest() {
-//        notesPresenter.attach(notesView);
-//
-//        assertNotNull(notesView);
-//    }
-//
-//    @Test
-//    public void detachTest() {
-//        notesPresenter.detach();
-//
-//        assertNull(notesPresenter.getView());
-//    }
 }
