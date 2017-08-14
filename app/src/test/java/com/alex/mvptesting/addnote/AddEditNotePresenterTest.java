@@ -24,7 +24,7 @@ public class AddEditNotePresenterTest {
 
     private final Note EMPTY_NOTE_TEST = new Note(null, "");
     private final Note NOTE_TEST = new Note("title", "text");
-    private final Integer NOTE_ID_TEST = 1;
+    private final Integer NOTE_ID_TEST = 0;
 
     @Mock
     private NotesRepository notesRepository;
@@ -53,7 +53,7 @@ public class AddEditNotePresenterTest {
     }
 
     @Test
-    public void addNote_closeAddEDitNoteActivity() {
+    public void saveNote_closeAddEDitNoteActivity() {
         when(notesRepository.saveNote(NOTE_TEST)).thenReturn(Completable.complete());
 
         addEditNotePresenter.saveNote(NOTE_TEST.getTitle(), NOTE_TEST.getText());
@@ -64,8 +64,7 @@ public class AddEditNotePresenterTest {
 
     @Test
     public void saveNote_showsError() {
-        when(notesRepository.saveNote(NOTE_TEST))
-                .thenReturn(CompletableFromAction.error(new Throwable()));
+        when(notesRepository.saveNote(NOTE_TEST)).thenReturn(Completable.error(new Throwable()));
 
         addEditNotePresenter.saveNote(NOTE_TEST.getTitle(), NOTE_TEST.getText());
 
