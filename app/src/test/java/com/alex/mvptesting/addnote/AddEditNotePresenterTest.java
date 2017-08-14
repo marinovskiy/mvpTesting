@@ -113,18 +113,17 @@ public class AddEditNotePresenterTest {
 
     @Test
     public void updateNote_closeAddEditNoteActivity() {
-        when(notesRepository.saveNote(NOTE_TEST)).thenReturn(Completable.complete());
+        when(notesRepository.updateNote(NOTE_TEST)).thenReturn(Completable.complete());
 
-        addEditNotePresenter.saveNote(NOTE_TEST.getTitle(), NOTE_TEST.getText());
+        addEditNotePresenter.updateNote(NOTE_ID_TEST, NOTE_TEST.getTitle(), NOTE_TEST.getText());
 
-        verify(notesRepository).saveNote(NOTE_TEST);
+        verify(notesRepository).updateNote(NOTE_TEST);
         verify(addNoteView).closeAddEditNoteActivity();
     }
 
     @Test
     public void updateNote_showError() {
-        when(notesRepository.updateNote(NOTE_TEST))
-                .thenReturn(CompletableFromAction.error(new Throwable()));
+        when(notesRepository.updateNote(NOTE_TEST)).thenReturn(Completable.error(new Throwable()));
 
         addEditNotePresenter.updateNote(NOTE_ID_TEST, NOTE_TEST.getTitle(), NOTE_TEST.getText());
 
